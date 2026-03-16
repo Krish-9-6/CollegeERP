@@ -1,13 +1,23 @@
 import { pool } from "./index";
 
-export async function query(text: string, params?: any[]) {
+export async function query(text: string, params?: any[], req?: Request) {
   const start = Date.now();
 
   try {
     const res = await pool.query(text, params);
     const duration = Date.now() - start;
 
-    console.log("Executed query", { text, duration });
+    if (req) {
+      console.log("Executed", req, "query", {
+        text,
+        duration,
+      });
+    } else {
+      console.log("Executed", "query", {
+        text,
+        duration,
+      });
+    }
 
     return res;
   } catch (error) {
