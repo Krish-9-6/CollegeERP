@@ -22,6 +22,17 @@ export async function login(email: string, pass: string) {
     throw new Error("Invalid email or password");
   }
 
+  let profileData: any = null;
+  if (user.role === 'STUDENT') {
+    const student = await query("SELECT * FROM students WHERE user_id = $1", [user.id]);
+    profileData = student.rows[0] || {};
+  } else if (user.role === 'FACULTY') {
+    const faculty = await query("SELECT * FROM faculty WHERE user_id = $1", [user.id]);
+    profileData = faculty.rows[0] || {};
+  } else if (user.role === 'PARENT') {
+    const parent = await query("SELECT * FROM parents WHERE user_id = $1", [user.id]);
+    profileData = parent.rows[0] || {};
+  }
   // ensure JWT secret is configured before creating a token
   const secret = process.env.JWT_ACCESS_SECRET;
   if (!secret) {
@@ -38,5 +49,14 @@ export async function login(email: string, pass: string) {
     { expiresIn: "1h" },
   );
 
-  return token;
+  return {
+    token,
+    user: {
+      id: user.id,
+      name: user.full_name,
+      role: user.role,
+      details: profileData
+      
+    }
+  }
 }

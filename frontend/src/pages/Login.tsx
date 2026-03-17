@@ -1,15 +1,46 @@
 import React, { useState } from "react";
 import "./Login.css";
+import axios from "axios";
 import Logo from "../assets/bits_logo.png";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Sign in attempt with:", { email, password });
     // TODO: Add authentication logic here
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {email, password});
+      console.log(res.data);
+      if (res.data && res.data.user){  
+        console.log("check");
+        alert(`Welcome, ${res.data.user.name}!`)
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        console.log(res.data.user);
+        const userRole = res.data.user.role;
+        
+          if(userRole === "STUDENT") {
+            console.log("student part run");
+            window.location.href = "/student-dashboard";
+          }
+        else if(userRole === "FACULTY") {
+          window.location.href = "/faculty-dashboard";
+        }
+        else if(userRole === "PARENT") {
+          window.location.href = "/parent-dashboard";
+        }
+        else {
+          alert("Invalid entry!");
+        }
+      }
+    }
+    catch(error: any) {
+      alert(error.response?.data?.message || "Login failed. Check your credentials")
+      console.error(error);
+    }
   };
 
   return (
