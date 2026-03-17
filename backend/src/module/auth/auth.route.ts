@@ -6,7 +6,7 @@ const router = Router();
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    console.log("Login attempt for: ", email);
     // basic request validation before calling controller
     if (!email || !password) {
       return res
