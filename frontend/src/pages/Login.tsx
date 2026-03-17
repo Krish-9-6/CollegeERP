@@ -13,14 +13,13 @@ const Login: React.FC = () => {
     // TODO: Add authentication logic here
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", {email, password});
-      console.log(res.data);
-      if (res.data && res.data.user){  
-        console.log("check");
-        alert(`Welcome, ${res.data.user.name}!`)
+      if (res.data && res.data.token.user){  
+        
+        alert(`Welcome, ${res.data.token.user.name}!`)
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem("user", JSON.stringify(res.data.token.user));
         console.log(res.data.user);
-        const userRole = res.data.user.role;
+        const userRole = res.data.token.user.role;
         
           if(userRole === "STUDENT") {
             console.log("student part run");
