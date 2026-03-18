@@ -2,42 +2,47 @@ import React, { useState } from "react";
 import "./Login.css";
 import axios from "axios";
 import Logo from "../assets/bits_logo.png";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Sign in attempt with:", { email, password });
-    // TODO: Add authentication logic here
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {email, password});
-      if (res.data && res.data.token.user){  
-        
-        alert(`Welcome, ${res.data.token.user.name}!`)
-        localStorage.setItem("token", res.data.token);
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
+        email,
+        password,
+      });
+      if (res.data && res.data.token.user) {
+        alert(`Welcome, ${res.data.token.user.name}!`);
+        localStorage.setItem("token", res.data.token.token);
         localStorage.setItem("user", JSON.stringify(res.data.token.user));
         console.log(res.data.user);
         const userRole = res.data.token.user.role;
-        
-          if(userRole === "STUDENT") {
-            console.log("student part run");
-            window.location.href = "/student-dashboard";
-          }
-        else if(userRole === "FACULTY") {
-          window.location.href = "/faculty-dashboard";
-        }
-        else if(userRole === "PARENT") {
-          window.location.href = "/parent-dashboard";
-        }
-        else {
+        console.log(userRole);
+        if (userRole === "STUDENT") {
+          console.log("student part run");
+          navigate("/student-dashboard");
+        } else if (userRole === "FACULTY") {
+          navigate("/faculty-dashboard");
+        } else if (userRole === "PARENT") {
+          navigate("/parent-dashboard");
+        } else {
           alert("Invalid entry!");
         }
       }
-    }
-    catch(error: any) {
-      alert(error.response?.data?.message || "Login failed. Check your credentials")
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        alert(
+          error.response?.data?.message || "Login failed. Check your credentials",
+        );
+      } else {
+        alert("Login failed. Check your credentials");
+      }
       console.error(error);
     }
   };
