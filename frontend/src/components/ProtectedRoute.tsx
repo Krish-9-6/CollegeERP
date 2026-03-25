@@ -1,27 +1,20 @@
-import { Navigate } from 'react-router-dom';
-import React from 'react';
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import type { ReactNode } from "react";
 
-interface Props {
-    children: React.ReactNode;
-    allowedRoles: string[];
+export default function ProtectedRoute({ children }: { children: ReactNode }) {
+  const { isAuthenticated, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return <div>Loading...</div>; // or a spinner component
+  }
+
+  if (!isAuthenticated) {
+    // `state` saves where they were trying to go
+    // so after login you can redirect them back there
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
 }
-
-export const ProtectedRoute = ({ children, allowedRoles }: Props) => {
-
-    const getUser = () => {
-        try {
-            return JSON.parse(localStorage.getItem('user') || '{}');
-        }
-        catch {
-            return {};
-        }
-    };
-
-    const user = getUser();
-    const token = localStorage.getItem('token');
-
-    if(!token) return <Navigate to = "/login" replace/>;
-    if(!allowedRoles.includes(user.role)) return <Navigate to= "/unauthorized" replace/>;
-
-    return <>{children}</>;
-};

@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import logo from "../assets/bits_logo.png";
 import "./sidebar.css";
+import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard },
@@ -21,6 +22,8 @@ const navItems = [
 ];
 
 export default function Sidebar() {
+  const { logout } = useAuth();
+
   return (
     <aside className="sidebar">
       {/* Header */}
@@ -55,7 +58,7 @@ export default function Sidebar() {
             <div className="profile-name">Username</div>
             <div className="profile-role">Role</div>
           </div>
-          <button type="button" className="profile-logout">
+          <button type="button" className="profile-logout" onClick={logout}>
             <LogOut style={{ width: "16px", height: "16px" }} />
           </button>
         </div>
