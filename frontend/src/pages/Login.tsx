@@ -1,44 +1,33 @@
 import React, { useState } from "react";
 import "./Login.css";
-import axios from "axios";
 import Logo from "../assets/bits_logo.png";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const Login: React.FC = () => {
+  const { login } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
+
+  const from = "/student-dashboard";
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Sign in attempt with:", { email, password });
-    // TODO: Add authentication logic here
+    setSubmitting(true);
+
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {email, password});
-      if (res.data && res.data.token.user){  
-        
-        alert(`Welcome, ${res.data.token.user.name}!`)
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.token.user));
-        console.log(res.data.user);
-        const userRole = res.data.token.user.role;
-        
-          if(userRole === "STUDENT") {
-            console.log("student part run");
-            window.location.href = "/student-dashboard";
-          }
-        else if(userRole === "FACULTY") {
-          window.location.href = "/faculty-dashboard";
-        }
-        else if(userRole === "PARENT") {
-          window.location.href = "/parent-dashboard";
-        }
-        else {
-          alert("Invalid entry!");
-        }
-      }
-    }
-    catch(error: any) {
-      alert(error.response?.data?.message || "Login failed. Check your credentials")
-      console.error(error);
+      await login(email, password);
+      console.log("yaha se nav hoga");
+      navigate(from, { replace: true });
+      // replace:true means /login won't appear in browser history
+      // so pressing Back won't take them back to the login page
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -85,7 +74,7 @@ const Login: React.FC = () => {
           </div>
 
           <button type="submit" className="signin-button">
-            Sign In
+            {submitting ? "Logging in..." : "Sign In"}
           </button>
         </form>
 

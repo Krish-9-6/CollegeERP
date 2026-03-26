@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import authRoutes from "./module/auth/auth.route";
+import cookieParser from "cookie-parser";
+import authRoutes from "./routes/auth";
 
 // load environment variables early; other modules also call dotenv, but
 // doing it here ensures configuration errors are caught on startup.
@@ -14,10 +15,16 @@ if (!process.env.JWT_ACCESS_SECRET) {
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Your React app's URL (Vite default)
+    credentials: true, // ← CRITICAL: allows cookies to be sent cross-origin
+  }),
+);
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
 app.use(helmet());
-app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
 
 app.get("/health", (req, res) => {
   res.status(200).json({
