@@ -46,7 +46,7 @@ export function Authprovider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider
       value={{
-        user, // { id, email } or null
+        user, // { id, email, full_name } or null
         loading, // true while restoring session on startup
         isAuthenticated: user !== null, // convenient boolean
         login,

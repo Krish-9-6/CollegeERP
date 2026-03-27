@@ -22,7 +22,7 @@ const navItems = [
 ];
 
 export default function Sidebar() {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   return (
     <aside className="sidebar">
@@ -55,8 +55,8 @@ export default function Sidebar() {
         <div className="profile-container">
           <div className="profile-avatar" />
           <div className="profile-info">
-            <div className="profile-name">Username</div>
-            <div className="profile-role">Role</div>
+            <div className="profile-name">{user?.full_name}</div>
+            <div className="profile-role">{user?.role}</div>
           </div>
           <button type="button" className="profile-logout" onClick={logout}>
             <LogOut style={{ width: "16px", height: "16px" }} />

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./Login.css";
 import Logo from "../assets/bits_logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import "../styles/Login.css";
 
 const Login: React.FC = () => {
   const { login } = useAuth();
