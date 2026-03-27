@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { verifyAccessToken } from "../middleware/auth";
 import { query } from "../db/query";
+import capitalizer from "../helpers/capitalizer";
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ router.post("/login", async (req, res) => {
 
   try {
     const result = await query(
-      "SELECT id, email, password, role FROM users WHERE email = $1",
+      "SELECT id, full_name, email, password, role FROM users WHERE email = $1",
       [email],
     );
 
@@ -56,8 +57,9 @@ router.post("/login", async (req, res) => {
     const { accessToken, refreshToken } = generateTokens(user);
     await storeRefreshToken(user.id, refreshToken);
     await setRefreshCookie(res, refreshToken);
-
-    res.json({ accessToken, user: { id: user.id, email: user.email } });
+    const fullNameCap = capitalizer(user.full_name);
+    const roleCap = capitalizer(user.role);
+    res.json({ accessToken, user: { id: user.id, email: user.email, full_name: fullNameCap, role: roleCap } });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ message: "Internal server error" });
@@ -107,7 +109,7 @@ router.post("/refresh", async (req, res) => {
     // JWT verification failed — clean up and reject
     console.error(err);
     await query("DELETE FROM refresh_tokens WHERE token = $1", [token]).catch(
-      () => {},
+      () => { },
     );
     res.clearCookie("refreshToken");
     res.status(403).json({ message: "Invalid refresh token" });
