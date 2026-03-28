@@ -5,10 +5,13 @@ import {
   Users,
   Settings,
   LogOut,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import logo from "../assets/bits_logo.png";
 import "./sidebar.css";
 import { useAuth } from "@/hooks/useAuth";
+import { useState } from "react";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard },
@@ -23,9 +26,24 @@ const navItems = [
 
 export default function Sidebar() {
   const { logout, user } = useAuth();
-
+  const [collapsed, setCollapsed] = useState(false);
+  const toggleSidebar = () => {
+    setCollapsed(!collapsed);
+  };
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar${collapsed ? " sidebar--collapsed" : ""}`}>
+      <button
+        type="button"
+        className="sidebar-toggle"
+        onClick={toggleSidebar}
+        title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
+        {collapsed ? (
+          <ChevronRight className="toggle-icon" />
+        ) : (
+          <ChevronLeft className="toggle-icon" />
+        )}
+      </button>
       {/* Header */}
       <div className="pheader">
         <div className="sidebar-header">
