@@ -11,11 +11,12 @@ interface User {
   id: number;
   email: string;
   password?: string;
-  role?: string;
+  role: string;
+  full_name: string;
 }
 
 const generateTokens = (user: User) => {
-  const payload = { id: user.id, email: user.email };
+  const payload = { id: user.id, email: user.email, full_name: capitalizer(user.full_name), role: capitalizer(user.role) };
   const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET!, {
     expiresIn: "15m",
   });
@@ -96,7 +97,7 @@ router.post("/refresh", async (req, res) => {
       token,
       process.env.JWT_REFRESH_SECRET!,
     ) as JwtPayload;
-    const user = { id: decoded.id, email: decoded.email };
+    const user = { id: decoded.id, email: decoded.email, full_name: decoded.full_name, role: decoded.role };
 
     // Rotate: delete old token, store new one
     await query("DELETE FROM refresh_tokens WHERE token = $1", [token]);

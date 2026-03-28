@@ -19,7 +19,91 @@
   width: 320px;
   background-color: var(--sidebar-bg);
   color: white;
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+/* ── Collapsed state ── */
+.sidebar--collapsed {
+  width: 72px;
+}
+
+/* Hide text-only elements when collapsed */
+.sidebar--collapsed .title,
+.sidebar--collapsed .subtitle,
+.sidebar--collapsed .nav-label,
+.sidebar--collapsed .nav-badge,
+.sidebar--collapsed .profile-info,
+.sidebar--collapsed .profile-logout {
+  display: none;
+}
+
+/* Center the header content */
+.sidebar--collapsed .pheader {
+  align-items: center;
+}
+
+.sidebar--collapsed .sidebar-header {
+  justify-content: center;
+  margin: 8% 0;
+  padding: 0;
+  background-color: transparent;
+  gap: 0;
+}
+
+/* Scale down the logo */
+.sidebar--collapsed .logo-img {
+  width: 48px;
+  height: 48px;
+  padding: 6px 0;
+  margin-bottom: 4px;
+}
+
+/* Center nav buttons and remove gap */
+.sidebar--collapsed .nav-btn {
+  justify-content: center;
+  gap: 0;
+  padding: 12px 0;
+}
+
+/* Center the avatar in the profile strip */
+.sidebar--collapsed .profile-container {
+  justify-content: center;
+  padding: 12px 0;
+  background-color: transparent;
+}
+
+.sidebar--collapsed .sidebar-toggle {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+  top: 6%;
+  transform: translate(50%, -50%);
+  width: 30px;
+  height: 37.5px;
+  padding: 0px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-color: #235a81;
+  transition: width 0.45s ease;
+}
+
+.sidebar-toggle {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+  top: 6%;
+  transform: translate(50%, -50%);
+  width: 40px;
+  height: 50px;
+  padding: 0px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-color: #235a81;
+  transition: width 0.45s ease;
 }
 
 .pheader {
