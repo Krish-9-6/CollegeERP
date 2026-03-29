@@ -38,6 +38,11 @@ const setRefreshCookie = async (res: Response, token: string) => {
 };
 
 router.post("/login", async (req, res) => {
+  const token = req.cookies.refreshToken;
+  if (token) {
+    await query("DELETE FROM refresh_tokens WHERE token = $1", [token]);
+  }
+  res.clearCookie("refreshToken");
   const { email, password } = req.body;
 
   try {
@@ -82,7 +87,6 @@ router.post("/refresh", async (req, res) => {
     );
 
     const row = result.rows[0];
-    console.log("row", row);
     if (!row) return res.status(403).json({ message: "Refresh token revoked" });
 
     // 📖 CONCEPT: Check expiry in DB as a second layer of validation,
@@ -132,8 +136,6 @@ async function storeRefreshToken(userId: number, token: string) {
     "INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)",
     [userId, token, expiresAt],
   );
-  console.log("userId", userId);
-  console.log("token", token);
 }
 
 export default router;
