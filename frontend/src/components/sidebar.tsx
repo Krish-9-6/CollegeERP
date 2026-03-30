@@ -9,7 +9,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import logo from "../assets/bits_logo.png";
-import "./sidebar.css";
+import '../styles/sidebar.css'
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 

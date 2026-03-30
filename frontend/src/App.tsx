@@ -22,7 +22,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            {/* Add more protected pages here - they'll automatically get the sidebar */}
           </Route>
         </Routes>
       </BrowserRouter>
