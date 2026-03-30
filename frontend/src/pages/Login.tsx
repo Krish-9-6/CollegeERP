@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import "../styles/Login.css";
 
 const Login: React.FC = () => {
-  const { login } = useAuth();
+  const { login, user, loading } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +13,9 @@ const Login: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const from = "/student-dashboard";
-
+  if (user) {
+    navigate(from, { replace: true });
+  }
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
@@ -33,58 +35,60 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-container">
-      <div className="login-card">
-        <div className="login-header">
-          <img src={Logo}></img>
-          <div className="header-text">
-            <h1>BITraumaStress Pilani</h1>
-            <p className="header-subtitle">Pilani | Dubai | Goa | Hyderabad</p>
+      {loading ? <div className="loader"></div> :
+        <div className="login-card">
+          <div className="login-header">
+            <img src={Logo}></img>
+            <div className="header-text">
+              <h1>BITraumaStress Pilani</h1>
+              <p className="header-subtitle">Pilani | Dubai | Goa | Hyderabad</p>
+            </div>
+          </div>
+
+          <form onSubmit={handleSignIn} className="login-form">
+            <div className="form-group">
+              <label htmlFor="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="example@college.edu"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+
+            <div className="form-footer">
+              <a href="#" className="forgot-password">
+                Forgot Password?
+              </a>
+            </div>
+
+            <button type="submit" className="signin-button">
+              {submitting ? "Logging in..." : "Sign In"}
+            </button>
+          </form>
+
+          <div className="login-footer">
+            <p>
+              © {new Date().getFullYear()} College Administration. All rights
+              reserved.
+            </p>
           </div>
         </div>
-
-        <form onSubmit={handleSignIn} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@college.edu"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          <div className="form-footer">
-            <a href="#" className="forgot-password">
-              Forgot Password?
-            </a>
-          </div>
-
-          <button type="submit" className="signin-button">
-            {submitting ? "Logging in..." : "Sign In"}
-          </button>
-        </form>
-
-        <div className="login-footer">
-          <p>
-            © {new Date().getFullYear()} College Administration. All rights
-            reserved.
-          </p>
-        </div>
-      </div>
+      }
     </div>
   );
 };
