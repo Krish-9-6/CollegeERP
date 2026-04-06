@@ -1,0 +1,90 @@
+.card {
+    background-color: #3e79aa;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    height: 200px;
+    color: #ffffff;
+}
+
+.card h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10%;
+}
+
+.card .main {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: -1%;
+}
+
+.card .desc {
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 10%;
+}
+
+.card .att-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.card .att-bar-fill {
+    height: 100%;
+    background-color: #004a7f;
+    border-radius: 5px;
+}
+
+.qk-card {
+    background-color: #3e79aa;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    flex: 1;
+    height: 200px;
+    color: #ffffff;
+    max-width: 416px;
+    max-height: 220px;
+    min-width: 386px;
+    min-height: 200px;
+}
+
+.qk-card h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10%;
+}
+
+.qk-card .main {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: -1%;
+}
+
+.qk-card .desc {
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 10%;
+}
+
+.qk-card .qbtn {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.qk-card .qbtn button {
+    background-color: #ffffff;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    color: #3e79aa;
+    font-size: 80%;
+    font-weight: 400;
+}
