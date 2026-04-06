@@ -1,11 +1,16 @@
 .dashboard-layout {
   display: flex;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .dashboard-sidebar {
   flex-shrink: 0;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow: visible;
 }
 
 .dashboard-content {
